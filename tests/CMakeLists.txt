@@ -50,6 +50,12 @@ FetchContent_MakeAvailable(Catch2)
 # These subfolders populate the variable ${OSQP_TESTCASE_SRCS},
 # ${OSQP_TESTCASE_GENERATED_SRCS} and ${OSQP_TESTCASE_DIRS}
 # ----------------------------------------------
+
+# Initialize the test case variables
+set(OSQP_TESTCASE_SRCS "")
+set(OSQP_TESTCASE_DIRS "")
+set(OSQP_TESTCASE_GENERATED_SRCS "")
+
 add_subdirectory(basic_lp)
 add_subdirectory(basic_qp)
 add_subdirectory(basic_qp2)
