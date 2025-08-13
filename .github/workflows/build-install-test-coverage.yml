@@ -52,9 +52,8 @@ jobs:
 
         - name: Build
           run: |
-            cmake -G "Unix Makefiles" -S . -B build -DCMAKE_INSTALL_PREFIX=$OSQP_INSTALL_PREFIX -DOSQP_VERSION=0.99 -DOSQP_BUILD_UNITTESTS=ON
-            cmake --build build
-            cmake --install build
+            cmake -G "Unix Makefiles" -S . -B build -DCMAKE_INSTALL_PREFIX=$OSQP_INSTALL_PREFIX -DOSQP_VERSION=0.99 -DOSQP_BUILD_UNITTESTS=ON &&
+            cd build && make && make install
 
         # Test the executables can link using the installed CMake
         - name: OSQP Link Test
