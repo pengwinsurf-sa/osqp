@@ -17,12 +17,9 @@ jobs:
 
         matrix:
             python-version: [3.9]
-            algebra: ['builtin', 'mkl']
+            algebra: ['builtin']
             float: ['OFF', 'ON']
             long: ['OFF', 'ON']
-            exclude:
-              - algebra: 'mkl'
-                float: 'ON'
     
       name: ${{ matrix.algebra }} algebra, ${{ matrix.float == 'ON' && 'single' || 'double' }}, ${{ matrix.long == 'ON' && 'long' || 'int' }}
 
@@ -58,12 +55,7 @@ jobs:
                 echo "LD_LIBRARY_PATH=$CONDA_PREFIX/lib" >> $GITHUB_ENV
                 conda install -c conda-forge libstdcxx-ng
     
-        - name: Install MKL
-          if: matrix.algebra == 'mkl'
-          run: |
-                conda install -c https://software.repos.intel.com/python/conda/ mkl-devel
-                conda info
-                conda list
+
 
         - name: Install Python dependencies
           run: |
