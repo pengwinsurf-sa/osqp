@@ -83,10 +83,7 @@ jobs:
                   -DCMAKE_INSTALL_PREFIX=$OSQP_INSTALL_PREFIX \
                   -DCMAKE_C_FLAGS="-fprofile-arcs -ftest-coverage" \
                   -DCMAKE_CXX_FLAGS="-fprofile-arcs -ftest-coverage" \
-                  -DOSQP_BUILD_UNITTESTS=ON \
-                  -DOSQP_USE_LONG=${{ matrix.long }} \
-                  -DOSQP_USE_FLOAT=${{ matrix.float }} \
-                  -DOSQP_ALGEBRA_BACKEND=${{ matrix.algebra }}
+                  -DOSQP_BUILD_UNITTESTS=ON 
             cmake --build $OSQP_BUILD_DIR_PREFIX
 
         - name: Install to prefix
