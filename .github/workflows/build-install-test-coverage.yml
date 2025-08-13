@@ -15,6 +15,17 @@ jobs:
       strategy:
         fail-fast: false
 
+        matrix:
+            python-version: [3.9]
+            algebra: ['builtin', 'mkl']
+            float: ['OFF', 'ON']
+            long: ['OFF', 'ON']
+            exclude:
+              - algebra: 'mkl'
+                float: 'ON'
+    
+      name: ${{ matrix.algebra }} algebra, ${{ matrix.float == 'ON' && 'single' || 'double' }}, ${{ matrix.long == 'ON' && 'long' || 'int' }}
+
       env:
         OSQP_BUILD_DIR_PREFIX: ${{ github.workspace }}/build
         OSQP_INSTALL_PREFIX: ${{ github.workspace }}/../install
@@ -50,10 +61,24 @@ jobs:
           run: |
             pip install numpy scipy
 
-        - name: Build
+            - name: Build
+            run: |
+              cmake -G "Unix Makefiles" \
+                    -S . -B $OSQP_BUILD_DIR_PREFIX \
+                    -DOSQP_ENABLE_PROFILING=ON \
+                    -DOSQP_ENABLE_INTERRUPT=ON \
+                    -DOSQP_ENABLE_PRINTING=ON \
+                    -DOSQP_BUILD_UNITTESTS=ON \
+                    -DOSQP_COVERAGE_CHECK=ON \
+                    -DOSQP_USE_LONG=${{ matrix.long }} \
+                    -DOSQP_USE_FLOAT=${{ matrix.float }} \
+                    -DOSQP_ALGEBRA_BACKEND=${{ matrix.algebra }}
+              cmake --build $OSQP_BUILD_DIR_PREFIX
+
+
+        - name: Test
           run: |
-            cmake -G "Unix Makefiles" -S . -B build -DCMAKE_INSTALL_PREFIX=$OSQP_INSTALL_PREFIX -DOSQP_VERSION=0.99 -DOSQP_BUILD_UNITTESTS=ON &&
-            cd build && make && make install
+              cmake --build $OSQP_BUILD_DIR_PREFIX --target test
 
         # Test the executables can link using the installed CMake
         - name: OSQP Link Test
