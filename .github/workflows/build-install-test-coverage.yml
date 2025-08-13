@@ -61,8 +61,8 @@ jobs:
           run: |
             pip install numpy scipy
 
-            - name: Build
-            run: |
+        - name: Build
+          run: |
               cmake -G "Unix Makefiles" \
                     -S . -B $OSQP_BUILD_DIR_PREFIX \
                     -DOSQP_ENABLE_PROFILING=ON \
